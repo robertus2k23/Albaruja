@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Menu' Ristorante Albaruja</title>
+  <title>PDF Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body, html {
@@ -27,15 +26,16 @@
         var renderedPages = 0;
 
         function renderPage(page) {
-          var viewport = page.getViewport({ scale: 2 });
           var container = document.createElement('div');
           container.className = 'pdf-page-container';
 
           var canvas = document.createElement('canvas');
           var context = canvas.getContext('2d');
           var containerWidth = pdfContainer.clientWidth;
+          var containerHeight = pdfContainer.clientHeight;
 
-          var scale = containerWidth / viewport.width;
+          var viewport = page.getViewport({ scale: 1 });
+          var scale = Math.min(containerWidth / viewport.width, containerHeight / viewport.height);
           var scaledViewport = page.getViewport({ scale: scale });
 
           canvas.height = scaledViewport.height;
