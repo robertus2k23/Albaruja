@@ -26,32 +26,20 @@
         var renderedPages = 0;
 
         function renderPage(page) {
-          var container = document.createElement('div');
-          container.className = 'pdf-page-container';
-
+          var scale = 1.5;
+          var viewport = page.getViewport({ scale: scale });
           var canvas = document.createElement('canvas');
           var context = canvas.getContext('2d');
-          var containerWidth = pdfContainer.clientWidth;
-          var containerHeight = pdfContainer.clientHeight;
-
-          var viewport = page.getViewport({ scale: 1.5 });
-          var scale = Math.min(containerWidth / viewport.width, containerHeight / viewport.height);
-          var scaledViewport = page.getViewport({ scale: scale });
-
-          canvas.height = scaledViewport.height;
-          canvas.width = scaledViewport.width;
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
 
           var renderContext = {
             canvasContext: context,
-            viewport: scaledViewport,
-            renderInteractiveForms: false,
-            textLayer: null,
+            viewport: viewport
           };
 
-          container.appendChild(canvas);
-          pdfContainer.appendChild(container);
-
           page.render(renderContext).promise.then(function() {
+            pdfContainer.appendChild(canvas);
             renderedPages++;
 
             if (renderedPages < numPages) {
