@@ -34,7 +34,7 @@
           var containerWidth = pdfContainer.clientWidth;
           var containerHeight = pdfContainer.clientHeight;
 
-          var viewport = page.getViewport({ scale: 1 });
+          var viewport = page.getViewport({ scale: 1.5 });
           var scale = Math.min(containerWidth / viewport.width, containerHeight / viewport.height);
           var scaledViewport = page.getViewport({ scale: scale });
 
