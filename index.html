@@ -9,13 +9,51 @@
       padding: 0;
       height: 100%;
     }
-    embed {
+    #pdf-container {
       width: 100%;
       height: 100%;
     }
   </style>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var url = 'Meniu Albaruja Simplu_compressed.pdf';
+      var pdfContainer = document.getElementById('pdf-container');
+
+      var loadingTask = pdfjsLib.getDocument(url);
+      loadingTask.promise.then(function(pdfDoc) {
+        var numPages = pdfDoc.numPages;
+        var renderedPages = 0;
+
+        function renderPage(page) {
+          var scale = 1.5;
+          var viewport = page.getViewport({ scale: scale });
+          var canvas = document.createElement('canvas');
+          var context = canvas.getContext('2d');
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          var renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+
+          page.render(renderContext).promise.then(function() {
+            pdfContainer.appendChild(canvas);
+            renderedPages++;
+
+            if (renderedPages < numPages) {
+              pdfDoc.getPage(renderedPages + 1).then(renderPage);
+            }
+          });
+        }
+
+        pdfDoc.getPage(1).then(renderPage);
+      });
+    });
+  </script>
 </head>
 <body>
-  <embed src="Meniu Albaruja Simplu_compressed.pdf#toolbar=0" type="application/pdf" />
+  <div id="pdf-container"></div>
 </body>
 </html>
