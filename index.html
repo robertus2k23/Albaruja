@@ -43,7 +43,9 @@
 
           var renderContext = {
             canvasContext: context,
-            viewport: scaledViewport
+            viewport: scaledViewport,
+            renderInteractiveForms: false,
+            textLayer: null,
           };
 
           container.appendChild(canvas);
