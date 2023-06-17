@@ -19,7 +19,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       var url = 'Meniu Albaruja Simplu_compressed.pdf';
       var pdfContainer = document.getElementById('pdf-container');
-      var scale = 1.5; // Adjust this value for clarity
 
       var loadingTask = pdfjsLib.getDocument(url);
       loadingTask.promise.then(function(pdfDoc) {
@@ -35,7 +34,8 @@
           var containerWidth = pdfContainer.clientWidth;
           var containerHeight = pdfContainer.clientHeight;
 
-          var viewport = page.getViewport({ scale: scale });
+          var viewport = page.getViewport({ scale: 1 });
+          var scale = Math.min(containerWidth / viewport.width, containerHeight / viewport.height);
           var scaledViewport = page.getViewport({ scale: scale });
 
           canvas.height = scaledViewport.height;
